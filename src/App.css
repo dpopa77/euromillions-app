@@ -1,0 +1,62 @@
+import React, { useState } from "react";
+
+function getRandom(arr, n) {
+  const copy = [...arr];
+  const result = [];
+  for (let i = 0; i < n; i++) {
+    const index = Math.floor(Math.random() * copy.length);
+    result.push(copy[index]);
+    copy.splice(index, 1);
+  }
+  return result;
+}
+
+function generateLine() {
+  const commonMain = [1, 3, 5, 7, 11, 13, 21, 25, 30];
+  const commonStars = [2, 3, 7];
+
+  const high = Array.from({ length: 19 }, (_, i) => i + 32).filter(n => !commonMain.includes(n));
+  const low = Array.from({ length: 31 }, (_, i) => i + 1).filter(n => !commonMain.includes(n));
+
+  while (true) {
+    const mains = [...getRandom(high, 3), ...getRandom(low, 2)].sort((a,b)=>a-b);
+
+    const hasConsecutive = mains.some((n,i)=> i>0 && n - mains[i-1] === 1);
+    if (hasConsecutive) continue;
+
+    const oddCount = mains.filter(n=>n%2!==0).length;
+    if (oddCount === 0 || oddCount === 5) continue;
+
+    const stars = getRandom(
+      Array.from({ length: 12 }, (_, i) => i + 1).filter(n => !commonStars.includes(n)),
+      2
+    ).sort((a,b)=>a-b);
+
+    return { mains, stars };
+  }
+}
+
+export default function App() {
+  const [lines, setLines] = useState([generateLine()]);
+
+  const generate = () => {
+    setLines(Array.from({ length: 5 }, () => generateLine()));
+  };
+
+  return (
+    <div style={{ padding: 20, fontFamily: "Arial" }}>
+      <h1>EuroMillions Strategy Generator</h1>
+      <p>Non-predictive. Designed to avoid common human picks.</p>
+
+      <button onClick={generate} style={{ padding: 10, marginBottom: 20 }}>
+        Generate Lines
+      </button>
+
+      {lines.map((line, i) => (
+        <div key={i} style={{ marginBottom: 15 }}>
+          <strong>Line {i + 1}:</strong> {line.mains.join(", ")} | Stars: {line.stars.join(", ")}
+        </div>
+      ))}
+    </div>
+  );
+}
