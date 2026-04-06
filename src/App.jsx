@@ -70,7 +70,7 @@ export default function App() {
   const loadFromServer = async () => {
     try {
       setStatus("Loading from server...");
-      const response = await fetch(`http://localhost:3001/api/generate?count=${count}`);
+      const response = await fetch(`/api/generate?count=${count}`);
       const data = await response.json();
 
       if (!data.lines || !Array.isArray(data.lines)) {
@@ -94,7 +94,10 @@ export default function App() {
 
   const copyLines = async () => {
     const text = lines
-      .map((line) => `Line ${line.id}: ${line.mains.join(", ")} | Stars: ${line.stars.join(", ")}`)
+      .map(
+        (line) =>
+          `Line ${line.id}: ${line.mains.join(", ")} | Stars: ${line.stars.join(", ")}`
+      )
       .join("\n");
 
     try {
@@ -129,7 +132,7 @@ export default function App() {
         </h1>
 
         <p style={{ color: "#475569", fontSize: 16 }}>
-          Simple, clean, and connected to your local server.
+          Simple, clean, and connected to your server.
         </p>
 
         <div
