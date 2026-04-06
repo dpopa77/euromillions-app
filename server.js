@@ -24,8 +24,16 @@ function getRandom(arr, n) {
 }
 
 function generateLine() {
-  const mains = getRandom(Array.from({ length: 50 }, (_, i) => i + 1), 5).sort((a, b) => a - b);
-  const stars = getRandom(Array.from({ length: 12 }, (_, i) => i + 1), 2).sort((a, b) => a - b);
+  const mains = getRandom(
+    Array.from({ length: 50 }, (_, i) => i + 1),
+    5
+  ).sort((a, b) => a - b);
+
+  const stars = getRandom(
+    Array.from({ length: 12 }, (_, i) => i + 1),
+    2
+  ).sort((a, b) => a - b);
+
   return { mains, stars };
 }
 
